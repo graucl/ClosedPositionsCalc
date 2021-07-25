@@ -1,3 +1,8 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using ClosedPositionsCalc.Application.Services.AutofacModules;
+using ClosedPositionsCalc.Application.Services.Contracts;
+using ClosedPositionsCalc.Application.Services.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,6 +24,7 @@ namespace ClosedPositionsCalc.Distributed.WebServices
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
         public IConfiguration Configuration { get; }
@@ -26,7 +32,6 @@ namespace ClosedPositionsCalc.Distributed.WebServices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -54,6 +59,11 @@ namespace ClosedPositionsCalc.Distributed.WebServices
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new ApplicationModule());
         }
     }
 }

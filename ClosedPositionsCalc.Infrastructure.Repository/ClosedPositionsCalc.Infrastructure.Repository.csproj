@@ -4,4 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="5.7.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ClosedPositionsCalc.Domain.Entities\ClosedPositionsCalc.Domain.Entities.csproj" />
+  </ItemGroup>
+
 </Project>
