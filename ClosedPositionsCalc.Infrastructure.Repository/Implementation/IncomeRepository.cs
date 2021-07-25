@@ -32,45 +32,17 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
             }
 
             return list;
-
-            //Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-            //Microsoft.Office.Interop.Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(path);
-            //Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-            //Microsoft.Office.Interop.Excel.Range xlRange = xlWorksheet.UsedRange;
-
-            //int rowCount = xlRange.Rows.Count;
-            //int colCount = xlRange.Columns.Count;
-
-            //for (int i = 1; i <= rowCount; i++)
-            //{
-            //    var prova = xlRange.Cells[i, "A"].Value.ToString();
-            //    var position = new Position();
-            //};
-
-            //using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
-            //{
-            //    using (var reader = ExcelReaderFactory.CreateReader(stream))
-            //    {
-            //        do
-            //        {
-            //            while (reader.Read())
-            //            {
-            //                for (int column = 0; column < reader.FieldCount; column++)
-            //                {
-            //                    //Console.WriteLine(reader.GetString(column));//Will blow up if the value is decimal etc. 
-            //                    Console.WriteLine(reader.GetValue(column));//Get Value returns object
-            //                }
-            //            }
-            //        } while (reader.NextResult());
-            //    }
-            //}
         }
 
         public bool UpdateRent(List<Position> rentList, string path)
         {
+            double profit = 0;
+            double rfd = 0;
+            double total = 0;
+
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets.Add("Renta2");
+                var worksheet = package.Workbook.Worksheets.Add("Renta");
 
                 worksheet.Cells["B1"].Value = "Action";
                 worksheet.Cells["C1"].Value = "Total Profit $";
@@ -86,6 +58,30 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
                     row++;
                 }
 
+                worksheet.Cells["F1"].Value = "Total Profit $";
+                worksheet.Cells["G1"].Value = "Rollover fees and dividends $";
+                worksheet.Cells["H1"].Value = "Total $";
+
+                foreach (var position in rentList)
+                {
+                    profit = profit + position.Profit;
+                    profit = Math.Round(profit, 2, MidpointRounding.ToEven);
+                }
+
+                foreach (var position in rentList)
+                {
+                    rfd = rfd + position.RolloverFeesDividends;
+                    rfd = Math.Round(rfd, 2, MidpointRounding.ToEven);
+                }
+
+                total = profit + rfd;
+                total = Math.Round(total, 2, MidpointRounding.ToEven);
+
+                worksheet.Cells["F2"].Value = profit.ToString();
+                worksheet.Cells["G2"].Value = rfd.ToString();
+                worksheet.Cells["H2"].Value = total.ToString();
+
+                worksheet.Cells.AutoFitColumns();
                 package.Save();
             }
 
