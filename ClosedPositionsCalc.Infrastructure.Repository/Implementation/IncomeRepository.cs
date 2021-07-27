@@ -36,6 +36,8 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
 
         public bool UpdateRent(List<Position> rentList, string path)
         {
+            var success = false;
+
             double profit = 0;
             double rfd = 0;
             double total = 0;
@@ -83,9 +85,11 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
 
                 worksheet.Cells.AutoFitColumns();
                 package.Save();
+
+                success = true;
             }
 
-            throw new NotImplementedException();
+            return success;
         }
     }
 }
