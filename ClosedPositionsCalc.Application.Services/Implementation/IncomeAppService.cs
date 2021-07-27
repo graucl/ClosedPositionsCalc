@@ -19,7 +19,7 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
         public void Calculations(string filePath)
         {
             var allPositionsList = _incomeRepository.GetAllPositions(filePath);
-            var positionsList = RemoveCryptocurrency(allPositionsList);
+            var positionsList = RemoveCryptocurrencies(allPositionsList);
             var rentList = GetRentList(positionsList);
             
             _incomeRepository.UpdateRent(rentList, filePath);
@@ -51,7 +51,7 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
             return rfd;
         }
 
-        public List<Position> RemoveCryptocurrency(List<Position> positionsList)
+        public List<Position> RemoveCryptocurrencies(List<Position> positionsList)
         {
             positionsList.RemoveAll(x => x.Action.Contains("Bitcoin"));
 
@@ -85,5 +85,7 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
 
             return rentList;
         }
+
+        public List<Cryptocurrency> GetCryptocurrencies(List<Cryptocurrency> )
     }
 }
