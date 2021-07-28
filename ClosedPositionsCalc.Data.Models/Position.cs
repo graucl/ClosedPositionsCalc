@@ -1,24 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ClosedPositionsCalc.Domain.Entities
+namespace ClosedPositionsCalc.Data.Models
 {
     public class Position
     {
         public int PositionId { get; set; }
         public string Action { get; set; }
+        public string Type { get; set; }
+        public DateTime BuyDate { get; set; }
+        public DateTime SellDate { get; set; }
+        public double BuyImport { get; set; }
+        public double SellImport { get; set; }
         public double Profit { get; set; }
         public double RolloverFeesDividends { get; set; }
 
         public Position()
         {
-
+            
         }
 
-        public Position(int positionId, string action, double profit, double rolloverFeesDividends)
+        public Position(int positionId, string action, double profit, double rolloverFeesDividends) : this()
         {
             PositionId = positionId;
             Action = action;
