@@ -86,7 +86,5 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
 
             return rentList;
         }
-
-        //public List<CryptocurrencyEntity> GetCryptocurrencies(List<CryptocurrencyEntity> )
     }
 }

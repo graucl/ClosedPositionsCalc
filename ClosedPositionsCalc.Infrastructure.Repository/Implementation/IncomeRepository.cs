@@ -1,5 +1,6 @@
 ﻿using ClosedPositionsCalc.Domain.Entities;
 using ClosedPositionsCalc.Infrastructure.Repository.Contracts;
+using Microsoft.Extensions.Configuration;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
-
+        
         public List<PositionEntity> GetAllPositions(string path)
         {
             var list = new List<PositionEntity>();
