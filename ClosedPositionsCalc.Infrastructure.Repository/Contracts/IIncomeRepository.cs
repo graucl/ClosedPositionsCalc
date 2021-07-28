@@ -9,7 +9,9 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Contracts
 {
     public interface IIncomeRepository
     {
-        List<Position> GetAllPositions(string path);
-        bool UpdateRent(List<Position> rentList, string path);
+        List<PositionEntity> GetAllPositions(string path);
+        List<CryptocurrencyEntity> GetAllCryptocurrencies(string path);
+        bool UpdateRent(List<PositionEntity> rentList, string path);
+        bool UpdateCryptocurrencies(List<CryptocurrencyEntity> cryptoList, string path);
     }
 }

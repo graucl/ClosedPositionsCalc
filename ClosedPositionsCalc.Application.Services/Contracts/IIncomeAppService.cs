@@ -6,9 +6,9 @@ namespace ClosedPositionsCalc.Application.Services.Contracts
     public interface IIncomeAppService
     {
         void Calculations(string filePath);
-        double AddProfit(List<Position> positionsList);
-        double AddRolloverFeesDividends(List<Position> positionsList);
-        List<Position> RemoveCryptocurrencies(List<Position> positionsList);
-        List<Position> GetRentList(List<Position> positionsList);
+        double AddProfit(List<PositionEntity> positionsList);
+        double AddRolloverFeesDividends(List<PositionEntity> positionsList);
+        List<PositionEntity> RemoveCryptocurrencies(List<PositionEntity> positionsList);
+        List<PositionEntity> GetRentList(List<PositionEntity> positionsList);
     }
 }

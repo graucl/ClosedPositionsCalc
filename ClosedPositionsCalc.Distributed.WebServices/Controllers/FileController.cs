@@ -14,7 +14,7 @@ namespace ClosedPositionsCalc.Distributed.WebServices.Controllers
     {
         private readonly IConfiguration _config;
         private readonly IIncomeAppService _incomeAppService;
-        private string excelFile;
+        private string _excelFile;
 
         public FileController(IConfiguration config, IIncomeAppService incomeAppService)
         {
@@ -25,11 +25,11 @@ namespace ClosedPositionsCalc.Distributed.WebServices.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
+            _excelFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _config.GetSection("FileSettings:Name").Value);
 
-            excelFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _config.GetSection("FileSettings:Name").Value);
             await SaveFile(file);
 
-            _incomeAppService.Calculations(excelFile);
+            _incomeAppService.Calculations(_excelFile);
 
             return Ok();
         }
@@ -40,9 +40,7 @@ namespace ClosedPositionsCalc.Distributed.WebServices.Controllers
 
             try
             {
-                //var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-                var filename = _config.GetSection("FileSettings:Name").Value;
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
+                var path = _excelFile;
 
                 using (var stream = new FileStream(path, FileMode.Create))
                 {

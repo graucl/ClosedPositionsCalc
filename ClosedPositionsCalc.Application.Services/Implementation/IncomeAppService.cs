@@ -21,11 +21,12 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
             var allPositionsList = _incomeRepository.GetAllPositions(filePath);
             var positionsList = RemoveCryptocurrencies(allPositionsList);
             var rentList = GetRentList(positionsList);
-            
+            var cryptoList = _incomeRepository.GetAllCryptocurrencies(filePath);
+            _incomeRepository.UpdateCryptocurrencies(cryptoList, filePath);
             _incomeRepository.UpdateRent(rentList, filePath);
         }
 
-        public double AddProfit(List<Position> positionsList)
+        public double AddProfit(List<PositionEntity> positionsList)
         {
             double profit = 0;
 
@@ -38,7 +39,7 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
             return profit;
         }
 
-        public double AddRolloverFeesDividends(List<Position> positionsList)
+        public double AddRolloverFeesDividends(List<PositionEntity> positionsList)
         {
             double rfd = 0;
 
@@ -51,18 +52,18 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
             return rfd;
         }
 
-        public List<Position> RemoveCryptocurrencies(List<Position> positionsList)
+        public List<PositionEntity> RemoveCryptocurrencies(List<PositionEntity> positionsList)
         {
             positionsList.RemoveAll(x => x.Action.Contains("Bitcoin"));
 
             return positionsList;
         }
 
-        public List<Position> GetRentList(List<Position> positionsList)
+        public List<PositionEntity> GetRentList(List<PositionEntity> positionsList)
         {
-            var tempList = new List<Position>();
-            var rentList = new List<Position>();
-            var rentPosition = new Position();
+            var tempList = new List<PositionEntity>();
+            var rentList = new List<PositionEntity>();
+            var rentPosition = new PositionEntity();
 
             foreach (var position in positionsList)
             {
@@ -78,7 +79,7 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
 
                     var profit = AddProfit(tempList);
                     var rfd = AddRolloverFeesDividends(tempList);
-                    rentPosition = new Position(0, position.Action, profit, rfd);
+                    rentPosition = new PositionEntity(0, position.Action, profit, rfd);
                     rentList.Add(rentPosition);
                 }
             }
@@ -86,6 +87,6 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
             return rentList;
         }
 
-        public List<Cryptocurrency> GetCryptocurrencies(List<Cryptocurrency> )
+        //public List<CryptocurrencyEntity> GetCryptocurrencies(List<CryptocurrencyEntity> )
     }
 }
