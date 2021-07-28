@@ -26,9 +26,7 @@ namespace ClosedPositionsCalc.Distributed.WebServices.Controllers
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
             _excelFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _config.GetSection("FileSettings:Name").Value);
-
             await SaveFile(file);
-
             _incomeAppService.Calculations(_excelFile);
 
             return Ok();
@@ -56,7 +54,5 @@ namespace ClosedPositionsCalc.Distributed.WebServices.Controllers
 
             return success;
         }
-
-        //private async string GetFilePath(string path)
     }
 }
