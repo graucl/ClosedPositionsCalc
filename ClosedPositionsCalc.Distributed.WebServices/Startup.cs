@@ -1,8 +1,7 @@
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using ClosedPositionsCalc.Application.Services.AutofacModules;
 using ClosedPositionsCalc.Application.Services.Contracts;
 using ClosedPositionsCalc.Application.Services.Implementation;
+using ClosedPositionsCalc.Infrastructure.Repository.Contracts;
+using ClosedPositionsCalc.Infrastructure.Repository.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +36,11 @@ namespace ClosedPositionsCalc.Distributed.WebServices
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClosedPositionsCalc.Distributed.WebServices", Version = "v1" });
             });
+
+            services.AddScoped<IIncomeAppService, IncomeAppService>();
+            services.AddScoped(typeof(IIncomeAppService), typeof(IncomeAppService));
+            services.AddScoped<IIncomeRepository, IncomeRepository>();
+            services.AddScoped(typeof(IIncomeRepository), typeof(IncomeRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,9 +65,9 @@ namespace ClosedPositionsCalc.Distributed.WebServices
             });
         }
 
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new ApplicationModule());
-        }
+        //public void ConfigureContainer(ContainerBuilder builder)
+        //{
+        //    builder.RegisterModule(new ApplicationModule());
+        //}
     }
 }
