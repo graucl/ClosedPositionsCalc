@@ -4,6 +4,7 @@ using ClosedPositionsCalc.Infrastructure.Repository.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ClosedPositionsCalc.Application.Services.Implementation
 {
@@ -16,14 +17,14 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
             this._incomeRepository = incomeRepository;
         }
 
-        public void Calculations(string filePath)
+        public async Task Calculations(string filePath)
         {
             var allPositionsList = _incomeRepository.GetAllPositions(filePath);
-            var positionsList = RemoveCryptocurrencies(allPositionsList);
-            var rentList = GetRentList(positionsList);
-            var cryptoList = _incomeRepository.GetAllCryptocurrencies(filePath);
-            _incomeRepository.UpdateCryptocurrencies(cryptoList, filePath);
-            _incomeRepository.UpdateRent(rentList, filePath);
+            var positionsList = await RemoveCryptocurrencies(allPositionsList);
+            var rentList = await GetRentList(positionsList);
+            var cryptoList = await _incomeRepository.GetAllCryptocurrencies(filePath);
+            await _incomeRepository.UpdateCryptocurrencies(cryptoList, filePath);
+            await _incomeRepository.UpdateRent(rentList, filePath);
         }
 
         public double AddProfit(List<PositionEntity> positionsList)
@@ -52,14 +53,14 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
             return rfd;
         }
 
-        public List<PositionEntity> RemoveCryptocurrencies(List<PositionEntity> positionsList)
+        public async Task<List<PositionEntity>> RemoveCryptocurrencies(List<PositionEntity> positionsList)
         {
             positionsList.RemoveAll(x => x.Action.Contains("Bitcoin"));
 
             return positionsList;
         }
 
-        public List<PositionEntity> GetRentList(List<PositionEntity> positionsList)
+        public async Task<List<PositionEntity>> GetRentList(List<PositionEntity> positionsList)
         {
             var tempList = new List<PositionEntity>();
             var rentList = new List<PositionEntity>();

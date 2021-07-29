@@ -5,6 +5,7 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
 {
@@ -35,7 +36,7 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
             return list;
         }
 
-        public List<CryptocurrencyEntity> GetAllCryptocurrencies(string path)
+        public async Task<List<CryptocurrencyEntity>> GetAllCryptocurrencies(string path)
         {
             var list = new List<CryptocurrencyEntity>();
 
@@ -60,7 +61,7 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
             return list;
         }
 
-        public bool UpdateRent(List<PositionEntity> rentList, string path)
+        public async Task<bool> UpdateRent(List<PositionEntity> rentList, string path)
         {
             var success = false;
 
@@ -118,7 +119,7 @@ namespace ClosedPositionsCalc.Infrastructure.Repository.Implementation
             return success;
         }
 
-        public bool UpdateCryptocurrencies(List<CryptocurrencyEntity> cryptoList, string path)
+        public async Task<bool> UpdateCryptocurrencies(List<CryptocurrencyEntity> cryptoList, string path)
         {
             var success = false;
             
