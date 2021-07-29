@@ -19,12 +19,18 @@ namespace ClosedPositionsCalc.Application.Services.Implementation
 
         public async Task Calculations(string filePath)
         {
+            if (filePath == null)
+            {
+                throw new ArgumentNullException("File path is null");
+            }
+
             var allPositionsList = _incomeRepository.GetAllPositions(filePath);
             var positionsList = await RemoveCryptocurrencies(allPositionsList);
             var rentList = await GetRentList(positionsList);
             var cryptoList = await _incomeRepository.GetAllCryptocurrencies(filePath);
             await _incomeRepository.UpdateCryptocurrencies(cryptoList, filePath);
             await _incomeRepository.UpdateRent(rentList, filePath);
+
         }
 
         public double AddProfit(List<PositionEntity> positionsList)
