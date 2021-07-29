@@ -27,7 +27,7 @@ namespace ClosedPositionsCalc.Distributed.WebServices.Controllers
         {
             _excelFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _config.GetSection("FileSettings:Name").Value);
             await SaveFile(file);
-            _incomeAppService.Calculations(_excelFile);
+            await _incomeAppService.Calculations(_excelFile);
 
             return Ok();
         }
